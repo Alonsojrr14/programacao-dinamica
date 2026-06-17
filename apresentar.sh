@@ -216,11 +216,14 @@ fi
 # ===========================================================================
 
 # Lê uma tecla. Setas chegam como ESC + '[' + letra; devolvemos a string toda.
+# Obs.: timeout inteiro (-t 1) por compatibilidade com o Bash 3.2 do macOS,
+# que rejeita timeouts fracionários. Como os bytes da seta chegam juntos, a
+# leitura retorna na hora; o timeout só age se for um ESC solto.
 ler_tecla() {
   local k rest=""
   IFS= read -rsn1 k || true
   if [[ "$k" == $'\e' ]]; then
-    IFS= read -rsn2 -t 0.01 rest || true
+    IFS= read -rsn2 -t 1 rest || true
     k+="$rest"
   fi
   printf '%s' "$k"

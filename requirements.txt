@@ -1,0 +1,4 @@
+# Dependências do projeto.
+# Os algoritmos rodam apenas com a biblioteca padrão do Python 3.12+.
+# A linha abaixo é necessária somente para executar a suíte de testes.
+pytest>=8.0

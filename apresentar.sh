@@ -28,9 +28,11 @@ PY="$(command -v python3 || command -v python)"
 AZUL='\033[1;36m'; VERDE='\033[1;32m'; AMARELO='\033[1;33m'; CINZA='\033[0;90m'
 BRANCO='\033[0;37m'; NEGRITO='\033[1m'; RESET='\033[0m'
 
-# Limpa a tela via ANSI (independe do TERM) e também o scrollback (\033[3J),
-# para que a tela anterior não fique acessível ao rolar para cima.
-limpar() { printf '\033[3J\033[H\033[2J'; }
+# Limpa a tela via ANSI (independe do TERM). A ORDEM importa no Terminal do
+# macOS: o \033[2J empurra a tela atual para o scrollback, então limpamos a
+# tela (2J) ANTES de limpar o scrollback (3J); por fim levamos o cursor ao
+# topo (H). Assim a tela anterior não reaparece ao rolar para cima.
+limpar() { printf '\033[2J\033[3J\033[H'; }
 
 secao() { echo -e "${NEGRITO}$1${RESET}"; }   # rótulo de seção
 txt()   { echo -e "${BRANCO}$1${RESET}"; }    # parágrafo explicativo
